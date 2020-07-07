@@ -34,7 +34,7 @@ int isPrime (int num);
 void* worker (void *arg){
 	threadArgs *info = (threadArgs *)arg;
 	pthread_mutex_lock(&trava); 
-	primosNum += isPrime(info -> n); //Verifica se o número é primo (1)  ou não (0) e adiciona à variável
+	primosNum += isPrime(info -> n); //Verifica se o número é primo (1) ou não (0) e adiciona à variável
 	pthread_mutex_unlock(&trava); //Após o fim da verificação, o mutex é destravado
 	workersNum --; //Número de processos diminui, e um novo pode passar a acontecer
 	workerstatus[info -> posicao] = 0; //Libera posição em que thread estava sendo rodada
