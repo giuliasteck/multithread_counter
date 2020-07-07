@@ -33,13 +33,12 @@ int isPrime (int num);
 /*Função que atualiza travas das threads e número de processos rodando simultaneamente*/
 void* worker (void *arg){
 	threadArgs *info = (threadArgs *)arg;
-	pthread_mutex_lock(&trava); //Processo verifica se número é primo
+	pthread_mutex_lock(&trava); 
 	primosNum += isPrime(info -> n); //Variável contabiliza quantos números primos há na entrada
 	pthread_mutex_unlock(&trava); //Após o fim da verificação, o mutex é destravado
 	workersNum --; //Número de processos diminui, e um novo pode passar a acontecer
-	workerstatus[info -> posicao] = 0;
+	workerstatus[info -> posicao] = 0; //Libera posição em que thread estava sendo rodada
 	free(info);
-	pthread_mutex_unlock(&trava);
 }
 
 int main() {
@@ -48,7 +47,7 @@ int main() {
 	int i = 0;
 	char c;
 
-	//Recebe a entrada do usuário até a quebra de linha
+	/*Recebe a entrada do usuário até a quebra de linha*/
 	do{
 		scanf("%d", &input[i++]);
 	}
@@ -60,7 +59,7 @@ int main() {
 	while (i<=iteration){
 		if(workersNum<MAX_PROCESSES){
 			saveArgs = (threadArgs*)malloc(sizeof(threadArgs));
-			saveArgs->n = input[i++];
+			saveArgs->n = input[i++]; 
 			int j = 0;
 			while (workerstatus[j] == 1) 
 				j ++;
